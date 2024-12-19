@@ -23,12 +23,25 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         const jobsCollection = client.db('solo-db').collection('jobs');
-
+        const bidsCollection = client.db('solo-db').collection('bids');
+        
         // save a jobData in db
         app.post('/add-job', async (req, res) => {
             const jobData = req.body;
             const result = await jobsCollection.insertOne(jobData);
             console.log(result);
+            res.send(result);
+        });
+
+        // save a bidData in db
+        app.post('/add-bid', async (req, res) => {
+           // 1. Save data in bids collection
+            const bidData = req.body;
+            const result = await bidsCollection.insertOne(bidData);
+
+            // 2. increase bid count in jobs collection
+            
+
             res.send(result);
         });
 
